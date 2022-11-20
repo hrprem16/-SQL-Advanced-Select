@@ -1,0 +1,44 @@
+WITH DOCTOR AS
+(SELECT
+    Name, 
+    ROW_NUMBER()OVER (PARTITION BY Occupation
+                     ORDER BY Name) AS RN
+FROM OCCUPATIONS
+WHERE Occupation = 'Doctor'
+ ) ,
+PROFESSOR AS
+(SELECT
+    Name, 
+    ROW_NUMBER()OVER (PARTITION BY Occupation
+                     ORDER BY Name) AS RN
+FROM OCCUPATIONS
+WHERE Occupation = 'Professor'
+ ) ,
+ SINGER AS
+(SELECT
+    Name, 
+    ROW_NUMBER()OVER (PARTITION BY Occupation
+                     ORDER BY Name) AS RN
+FROM OCCUPATIONS
+WHERE Occupation = 'Singer'
+ ) ,
+ ACTOR AS
+(SELECT
+    Name, 
+    ROW_NUMBER()OVER (PARTITION BY Occupation
+                     ORDER BY Name) AS RN
+FROM OCCUPATIONS
+WHERE Occupation = 'Actor'
+ ) 
+ 
+ SELECT Doctor.Name,
+    Professor.Name,
+    Singer.Name,
+    Actor.Name
+FROM DOCTOR
+RIGHT JOIN PROFESSOR 
+    ON Doctor.RN = Professor.RN
+LEFT JOIN SINGER
+    ON Professor.RN = Singer.RN
+LEFT JOIN ACTOR
+    ON Singer.RN = Actor.RN
